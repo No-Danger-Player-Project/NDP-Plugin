@@ -79,7 +79,7 @@ public class HttpUtil {
         jsonObject.addProperty("verification", token);
         jsonObject.addProperty("action", "ban");
         jsonObject.addProperty("username", banEntry.name());
-        jsonObject.addProperty("ip", banEntry.reason());
+        jsonObject.addProperty("ip", banEntry.ip());
         jsonObject.addProperty("cause", banEntry.reason());
         post(url + "add_ban", gson.toJson(jsonObject));
     }
@@ -91,7 +91,7 @@ public class HttpUtil {
         jsonObject.addProperty("verification", token);
         jsonObject.addProperty("action", "remove");
         jsonObject.addProperty("username", banEntry.name());
-        jsonObject.addProperty("ip", banEntry.reason());
+        jsonObject.addProperty("ip", banEntry.ip());
         jsonObject.addProperty("cause", reason);
         post(url + "add_ban", gson.toJson(jsonObject));
     }
