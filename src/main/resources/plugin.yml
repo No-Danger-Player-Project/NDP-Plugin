@@ -4,6 +4,7 @@ main: top.alazeprt.ndps.NDPSpigot
 api-version: 1.13
 load: STARTUP
 authors: [ alazeprt ]
+folia-supported: true
 commands:
   ndp:
     description: Ban or pardon a player from the server
