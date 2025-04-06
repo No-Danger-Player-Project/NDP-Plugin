@@ -1,6 +1,7 @@
 package top.alazeprt.ndps;
 
 import org.apache.hc.core5.http.ParseException;
+import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -20,6 +21,7 @@ import top.alazeprt.ndps.util.NBanEntry;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -96,6 +98,11 @@ public class NDPSpigot extends JavaPlugin implements CommandExecutor, Listener {
             String reason = args.length == 3 ? args[2] : "由管理员" + sender.getName() + "添加";
             NBanEntry banEntry = new NBanEntry(player.getName(), ip, reason);
             player.kickPlayer(ChatColor.RED + "[NDP] 你被禁止进入服务器! 原因: \n" + banEntry.reason());
+            sender.sendMessage(ChatColor.GREEN + "该玩家的 IP 是: " + player.getAddress().getAddress().getHostAddress());
+            BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+            banList.addBan(player.getName(), reason, (Date) null, sender.getName());
+            BanList banList1 = Bukkit.getBanList(BanList.Type.IP);
+            banList1.addBan(player.getAddress().getAddress().getHostAddress(), reason, (Date) null, sender.getName());
             new Thread(() -> {
                 try {
                     sender.sendMessage(ChatColor.GREEN + "已向远程服务器请求添加该记录!");
