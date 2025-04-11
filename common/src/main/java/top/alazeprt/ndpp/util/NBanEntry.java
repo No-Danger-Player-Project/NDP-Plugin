@@ -1,4 +1,4 @@
-package top.alazeprt.ndps.util;
+package top.alazeprt.ndpp.util;
 
 public record NBanEntry(String name, String ip, String reason) {
 }

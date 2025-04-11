@@ -1,0 +1,8 @@
+name: NDPSpigot
+main: top.alazeprt.ndpp.NDPSpigot
+version: 1.0
+api-version: 1.13
+author: alazeprt
+commands:
+  ndp:
+    description: NDP command

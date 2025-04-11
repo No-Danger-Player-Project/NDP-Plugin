@@ -1,4 +1,4 @@
-package top.alazeprt.ndps.util;
+package top.alazeprt.ndpp.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
