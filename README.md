@@ -14,6 +14,8 @@
 
 参见 [NDP](https://github.com/No-Danger-Player-Project/) 介绍
 
+---
+
 ## 下载安装
 
 你可通过如下途径下载插件:
@@ -21,6 +23,8 @@
 - [GitHub Actions](https://github.com/No-Danger-Player-Project/NDPPlugin/actions)
 
 注意: 从 Actions 下载的插件为开发版, 可能存在问题, 同时在 Actions 下载后需要解压下载的文件并选择你需要的服务端版本安装
+
+---
 
 ## 关于项目
 
