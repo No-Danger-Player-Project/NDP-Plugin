@@ -1,5 +1,7 @@
 package top.alazeprt.ndpp;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -16,7 +18,8 @@ import top.alazeprt.ndpp.util.NBanEntry;
 import top.alazeprt.ndpp.util.NOnlinePlayer;
 import top.alazeprt.ndpp.util.SpigotOnlinePlayer;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class NDPSpigot extends JavaPlugin implements NDPPlugin, CommandExecutor, Listener {
@@ -34,14 +37,37 @@ public class NDPSpigot extends JavaPlugin implements NDPPlugin, CommandExecutor,
     }
 
     @Override
-    public void initConfig() {
-        File file = new File(getDataFolder(), "data.yml");
-        if (!file.exists()) {
-            saveResource("data.yml", false);
+    public void saveNConfig() {
+        File file = new File(getDataFolder(), "data.json");
+        JsonObject jsonObject = new JsonObject();
+        for (String key : player2IpMap.keySet()) {
+            jsonObject.addProperty(key, player2IpMap.get(key));
         }
-        data = YamlConfiguration.loadConfiguration(file);
-        for (String key : data.getKeys(false)) {
-            player2IpMap.put(key, data.getString(key));
+        Gson gson = new Gson();
+        OutputStreamWriter writer;
+        try {
+            writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        gson.toJson(jsonObject, writer);
+    }
+
+    @Override
+    public void initConfig() {
+        File file = new File(getDataFolder(), "data.json");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            Gson gson = new Gson();
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            for (String key : jsonObject.keySet()) {
+                player2IpMap.put(key, jsonObject.get(key).getAsString());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

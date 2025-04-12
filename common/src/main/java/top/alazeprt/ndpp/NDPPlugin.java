@@ -25,10 +25,10 @@ public interface NDPPlugin {
     
     default void disable() {
         HttpUtil.stop();
-        saveConfig();
+        saveNConfig();
     }
 
-    void saveConfig();
+    void saveNConfig();
 
     void initConfig();
 
