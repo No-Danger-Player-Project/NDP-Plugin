@@ -31,3 +31,9 @@ jobs:
           name: NDP for Spigot Artifacts
           path: |
             spigot/build/libs/
+      - name: capture build artifacts (velocity)
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: NDP for Velocity Artifacts
+          path: |
+            velocity/build/libs/
