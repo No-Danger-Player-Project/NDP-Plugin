@@ -23,7 +23,7 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName.set("NDP-bungeeCord-${project.version}.jar")
+        archiveFileName.set("NDP-BungeeCord-${project.version}.jar")
     }
 
     runWaterfall {
