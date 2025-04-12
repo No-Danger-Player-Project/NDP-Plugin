@@ -28,6 +28,6 @@ jobs:
       - name: capture build artifacts (spigot)
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: NDPSpigot Artifacts
+          name: NDP for Spigot Artifacts
           path: |
-            build/libs/
+            spigot/build/libs/
