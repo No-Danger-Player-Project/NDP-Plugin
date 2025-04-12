@@ -30,4 +30,4 @@ jobs:
         with:
           name: NDP Artifacts
           path: |
-            dist/*.jar
+            dist/
