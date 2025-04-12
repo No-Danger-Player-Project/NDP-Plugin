@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class HttpUtil {
-    public static final String url = "http://api.ndp.codewaves.cn:5020/";
+    public static final String url = "https://api.ndp.codewaves.cn/";
     public static final List<NBanEntry> bans = new ArrayList<>();
     public static final String token = "ndp_pwd_114514";
     static long t = 0;

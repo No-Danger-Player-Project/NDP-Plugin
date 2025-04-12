@@ -2,11 +2,15 @@ package top.alazeprt.ndpp;
 
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.alazeprt.ndpp.util.NBanEntry;
 import top.alazeprt.ndpp.util.NOnlinePlayer;
@@ -72,5 +76,19 @@ public class NDPSpigot extends JavaPlugin implements NDPPlugin, CommandExecutor,
         banList.addBan(banEntry.name(), banEntry.reason(), (Date) null, sender);
         BanList banList1 = Bukkit.getBanList(BanList.Type.IP);
         banList1.addBan(banEntry.ip(), banEntry.reason(), (Date) null, sender);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player player) {
+            onCommand(new SpigotOnlinePlayer(player), args);
+        }
+        return false;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        NOnlinePlayer player = new SpigotOnlinePlayer(event.getPlayer());
+        onJoin(player);
     }
 }

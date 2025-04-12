@@ -19,6 +19,8 @@ public interface NDPPlugin {
     default void enable() {
         HttpUtil.init();
         initConfig();
+        initCommand();
+        initListener();
     }
     
     default void disable() {
