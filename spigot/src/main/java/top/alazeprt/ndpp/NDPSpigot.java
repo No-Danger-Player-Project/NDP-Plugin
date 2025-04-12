@@ -16,10 +16,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.alazeprt.ndpp.util.NBanEntry;
 import top.alazeprt.ndpp.util.NOnlinePlayer;
+import top.alazeprt.ndpp.util.SpigotCommandSource;
 import top.alazeprt.ndpp.util.SpigotOnlinePlayer;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Date;
 
 public class NDPSpigot extends JavaPlugin implements NDPPlugin, CommandExecutor, Listener {
@@ -57,14 +59,17 @@ public class NDPSpigot extends JavaPlugin implements NDPPlugin, CommandExecutor,
     public void initConfig() {
         File file = new File(getDataFolder(), "data.json");
         try {
+            Files.createDirectories(getDataFolder().toPath());
             if (!file.exists()) {
                 file.createNewFile();
             }
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
             JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            for (String key : jsonObject.keySet()) {
-                player2IpMap.put(key, jsonObject.get(key).getAsString());
+            if (jsonObject != null) {
+                for (String key : jsonObject.keySet()) {
+                    player2IpMap.put(key, jsonObject.get(key).getAsString());
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -106,9 +111,7 @@ public class NDPSpigot extends JavaPlugin implements NDPPlugin, CommandExecutor,
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player player) {
-            onCommand(new SpigotOnlinePlayer(player), args);
-        }
+        onCommand(new SpigotCommandSource(sender), args);
         return false;
     }
 

@@ -40,13 +40,15 @@ public class HttpUtil {
                     Gson gson = new Gson();
                     JsonObject json = gson.fromJson(data, JsonObject.class);
                     bans.clear();
-                    for (JsonElement element : json.getAsJsonArray("recent_actions")) {
-                        JsonObject action = element.getAsJsonObject();
-                        String username = action.get("username").getAsString();
-                        String ip = action.get("ip").getAsString();
-                        String reason = action.get("cause").getAsString();
-                        NBanEntry entry = new NBanEntry(username, ip, reason);
-                        bans.add(entry);
+                    if (json.has("recent_actions")) {
+                        for (JsonElement element : json.getAsJsonArray("recent_actions")) {
+                            JsonObject action = element.getAsJsonObject();
+                            String username = action.get("username").getAsString();
+                            String ip = action.get("ip").getAsString();
+                            String reason = action.get("cause").getAsString();
+                            NBanEntry entry = new NBanEntry(username, ip, reason);
+                            bans.add(entry);
+                        }
                     }
                 } catch (IOException | ParseException e) {
                     e.printStackTrace();

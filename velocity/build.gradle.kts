@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("com.gradleup.shadow") version "8.3.5"
+    id("xyz.jpenilla.run-velocity") version "2.3.1"
 }
 
 group = "top.alazeprt.ndpp"
@@ -24,5 +25,9 @@ tasks {
 
     shadowJar {
         archiveFileName.set("NDP-Velocity-${project.version}.jar")
+    }
+
+    runVelocity {
+        velocityVersion("3.4.0-SNAPSHOT")
     }
 }

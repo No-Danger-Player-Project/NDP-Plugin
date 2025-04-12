@@ -17,10 +17,12 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
 import top.alazeprt.ndpp.util.NBanEntry;
 import top.alazeprt.ndpp.util.NOnlinePlayer;
+import top.alazeprt.ndpp.util.VelocityCommandSource;
 import top.alazeprt.ndpp.util.VelocityOnlinePlayer;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Plugin(name = "NDPVelocity", id = "ndpvelocity", version = "1.0", authors = {"alazeprt"})
@@ -58,14 +60,17 @@ public class NDPVelocity implements NDPPlugin {
     public void initConfig() {
         File file = new File(dataDirectory.toFile(), "data.json");
         try {
+            Files.createDirectories(dataDirectory);
             if (!file.exists()) {
                 file.createNewFile();
             }
             Gson gson = new Gson();
             InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
             JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            for (String key : jsonObject.keySet()) {
-                player2IpMap.put(key, jsonObject.get(key).getAsString());
+            if (jsonObject != null) {
+                for (String key : jsonObject.keySet()) {
+                    player2IpMap.put(key, jsonObject.get(key).getAsString());
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -78,9 +83,7 @@ public class NDPVelocity implements NDPPlugin {
         CommandMeta meta = commandManager.metaBuilder("ndp").plugin(this).build();
         SimpleCommand simpleCommand = invocation -> {
             String[] args = invocation.arguments();
-            if (invocation.source() instanceof Player player) {
-                onCommand(new VelocityOnlinePlayer(player), args);
-            }
+            onCommand(new VelocityCommandSource(invocation.source()), args);
         };
         commandManager.register(meta, simpleCommand);
     }
