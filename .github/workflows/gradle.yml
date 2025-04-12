@@ -37,3 +37,9 @@ jobs:
           name: NDP for Velocity Artifacts
           path: |
             velocity/build/libs/
+      - name: capture build artifacts (bungeecord)
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: NDP for BungeeCord Artifacts
+          path: |
+            bungeecord/build/libs/
