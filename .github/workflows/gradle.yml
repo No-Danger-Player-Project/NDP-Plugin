@@ -24,10 +24,10 @@ jobs:
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: Build
-        run: ./gradlew build shadowJar
+        run: ./gradlew build shadowJar moveArtifacts
       - name: capture build artifacts
         uses: actions/upload-artifact@v4.6.0
         with:
           name: NDP Artifacts
           path: |
-            ./
+            dist/

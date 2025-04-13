@@ -19,9 +19,3 @@ tasks.register("moveArtifacts") {
         }
     }
 }
-
-tasks {
-    build {
-        finalizedBy("moveArtifacts")
-    }
-}
