@@ -15,7 +15,7 @@ tasks.register("moveArtifacts") {
         if (subproject.name == "spigot" || subproject.name == "bungeecord" || subproject.name == "velocity") {
             copy {
                 from (subproject.tasks.shadowJar.get().archiveFile)
-                into ("dist")
+                into ("build/dist")
             }
         }
     }
