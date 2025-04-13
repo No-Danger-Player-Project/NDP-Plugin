@@ -11,6 +11,7 @@ version = "1.0"
 
 tasks.register("moveArtifacts") {
     subprojects.forEach { subproject ->
+        println(1)
         if (subproject.name == "spigot" || subproject.name == "bungeecord" || subproject.name == "velocity") {
             copy {
                 from (subproject.tasks.shadowJar.get().archiveFile)
