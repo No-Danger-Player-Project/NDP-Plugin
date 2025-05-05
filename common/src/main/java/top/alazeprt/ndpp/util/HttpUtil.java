@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class HttpUtil {
-    public static final String url = "https://api.ndp.codewaves.cn/";
-    public static final List<NBanEntry> bans = new ArrayList<>();
-    public static final String token = "ndp_pwd_114514";
-    static long t = 0;
-    static boolean close = false;
-    public static final Thread thread = new Thread(() -> {
+    public String url;
+    public String token;
+    public final List<NBanEntry> bans = new ArrayList<>();
+    long t = 0;
+    boolean close = false;
+    public final Thread thread = new Thread(() -> {
         while (!close) {
             try {
                 Thread.sleep(1000);
@@ -57,15 +57,31 @@ public class HttpUtil {
         }
     });
 
-    public static void init() {
+    public HttpUtil(NRemoteConfig config) {
+        if (config == null) {
+            this.url = "http://localhost:8080/";
+            this.token = "your_token_here";
+        } else if (config.url() == null) {
+            this.url = "http://localhost:8080/";
+            this.token = config.token();
+        } else if (config.token() == null) {
+            this.url = config.url();
+            this.token = "your_token_here";
+        } else {
+            this.url = config.url();
+            this.token = config.token();
+        }
+    }
+
+    public void init() {
         thread.start();
     }
 
-    public static void stop() {
+    public void stop() {
         close = true;
     }
 
-    public static Optional<NBanEntry> getBan(String data) {
+    public Optional<NBanEntry> getBan(String data) {
         for (NBanEntry ban : bans) {
             if (ban.name().equals(data) || ban.ip().equals(data)) {
                 return Optional.of(ban);
@@ -74,7 +90,7 @@ public class HttpUtil {
         return Optional.empty();
     }
 
-    public static void addBan(NBanEntry banEntry) throws IOException, ParseException {
+    public void addBan(NBanEntry banEntry) throws IOException, ParseException {
         bans.add(banEntry);
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
@@ -86,7 +102,7 @@ public class HttpUtil {
         post(url + "add_ban", gson.toJson(jsonObject));
     }
 
-    public static void removeBan(NBanEntry banEntry, String reason) throws IOException, ParseException {
+    public void removeBan(NBanEntry banEntry, String reason) throws IOException, ParseException {
         bans.remove(banEntry);
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
@@ -98,7 +114,7 @@ public class HttpUtil {
         post(url + "add_ban", gson.toJson(jsonObject));
     }
 
-    public static String get(String url, String data) throws IOException, ParseException {
+    public String get(String url, String data) throws IOException, ParseException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             URIBuilder uriBuilder;
             try {
@@ -125,7 +141,7 @@ public class HttpUtil {
         }
     }
 
-    public static String post(String url, String data) throws IOException, ParseException {
+    public String post(String url, String data) throws IOException, ParseException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
 

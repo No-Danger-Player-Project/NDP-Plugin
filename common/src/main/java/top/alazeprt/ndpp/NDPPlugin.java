@@ -16,16 +16,17 @@ import java.util.spi.AbstractResourceBundleProvider;
 
 public interface NDPPlugin {
     Map<String, String> player2IpMap = new HashMap<>();
+    HttpUtil httpUtil = new HttpUtil(null);
 
     default void enable() {
-        HttpUtil.init();
         initConfig();
+        httpUtil.init();
         initCommand();
         initListener();
     }
     
     default void disable() {
-        HttpUtil.stop();
+        httpUtil.stop();
         saveNConfig();
     }
 
@@ -38,8 +39,8 @@ public interface NDPPlugin {
     void initListener();
 
     default void onJoin(NOnlinePlayer player) {
-        Optional<NBanEntry> entry = HttpUtil.getBan(player.getName());
-        Optional<NBanEntry> entry2 = HttpUtil.getBan(player.getAddress().getHostAddress());
+        Optional<NBanEntry> entry = httpUtil.getBan(player.getName());
+        Optional<NBanEntry> entry2 = httpUtil.getBan(player.getAddress().getHostAddress());
         if (entry.isPresent()) {
             player.kick("[NDP] 你被禁止进入服务器! 原因: \n" + entry.get().reason());
         } else
@@ -57,7 +58,7 @@ public interface NDPPlugin {
             source.sendMessage("§c用法: /ndp <ban/pardon> <name> [reason]");
             return;
         }
-        Optional<NBanEntry> entry = HttpUtil.getBan(args[1]);
+        Optional<NBanEntry> entry = httpUtil.getBan(args[1]);
         if (!entry.isPresent() && args[0].equals("pardon")) {
             source.sendMessage("§c未查询到该记录!");
         } else if (entry.isPresent() && args[0].equals("ban")) {
@@ -66,7 +67,7 @@ public interface NDPPlugin {
             source.sendMessage("§a已向远程服务器请求删除该记录!");
             new Thread(() -> {
                 try {
-                    HttpUtil.removeBan(entry.get(), args.length == 3 ? args[2] : "由管理员" + source.getName() + "移除");
+                    httpUtil.removeBan(entry.get(), args.length == 3 ? args[2] : "由管理员" + source.getName() + "移除");
                 } catch (IOException | ParseException e) {
                     source.sendMessage("§c在请求过程中遇到错误: " + e.getMessage());
                 }
@@ -84,7 +85,7 @@ public interface NDPPlugin {
             new Thread(() -> {
                 try {
                     source.sendMessage("§a已向远程服务器请求添加该记录!");
-                    HttpUtil.addBan(banEntry);
+                    httpUtil.addBan(banEntry);
                 } catch (IOException | ParseException e) {
                     source.sendMessage("§c在请求过程中遇到错误: " + e.getMessage());
                 }

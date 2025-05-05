@@ -54,6 +54,24 @@ public class NDPBungeeCord extends Plugin implements NDPPlugin, Listener {
                     player2IpMap.put(key, jsonObject.get(key).getAsString());
                 }
             }
+            File configFile = new File(getDataFolder(), "config.json");
+            if (!configFile.exists()) {
+                file.createNewFile();
+                OutputStreamWriter writer  = new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8);
+                writer.write("{\n  \"url\": \"https://localhost:8080/\",\n  \"token\": \"your_token_here\"\n}");
+                writer.close();
+            }
+            InputStreamReader configReader = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8);
+            JsonObject config = gson.fromJson(configReader, JsonObject.class);
+            if (config != null && config.has("url") && config.has("token")) {
+                httpUtil.url = config.get("url").getAsString();
+                httpUtil.token = config.get("token").getAsString();
+            } else {
+                httpUtil.url = "https://localhost:8080/";
+                httpUtil.token = "your_token_here";
+            }
+            reader.close();
+            configReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
