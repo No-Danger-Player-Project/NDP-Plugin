@@ -24,10 +24,22 @@ jobs:
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: Build
-        run: ./gradlew build shadowJar moveArtifacts
-      - name: capture build artifacts
+        run: ./gradlew build shadowJar
+      - name: capture build artifacts (spigot)
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: NDP Artifacts
+          name: NDP for Spigot Artifacts
           path: |
-            dist/
+            spigot/build/libs/
+      - name: capture build artifacts (velocity)
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: NDP for Velocity Artifacts
+          path: |
+            velocity/build/libs/
+      - name: capture build artifacts (bungeecord)
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: NDP for BungeeCord Artifacts
+          path: |
+            bungeecord/build/libs/
