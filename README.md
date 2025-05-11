@@ -21,6 +21,7 @@
 你可通过如下途径下载插件:
 - [GitHub Releases](https://github.com/No-Danger-Player-Project/NDPPlugin/releases)
 - [GitHub Actions](https://github.com/No-Danger-Player-Project/NDPPlugin/actions)
+- [Modrinth](https://modrinth.com/plugin/ndp-plugins)
 
 注意: 从 Actions 下载的插件为开发版, 可能存在问题, 同时在 Actions 下载后需要解压下载的文件并选择你需要的服务端版本安装
 
