@@ -81,6 +81,11 @@ public interface NDPPlugin {
             NBanEntry banEntry = new NBanEntry(args[1], ip, reason);
             getPlayer(args[1]).kick("§c[NDP] 你被禁止进入服务器! 原因: \n" + banEntry.reason());
             source.sendMessage("§a该玩家的 IP 是: " + ip);
+            if (ip.startsWith("127") || ip.startsWith("192.168") || ip.startsWith("10")) {
+                source.sendMessage("§c该 IP 可能是局域网地址, 你可能在使用内网穿透, 不能被封禁!");
+                source.sendMessage("§c建议你在内网穿透服务中开启 Proxy Protocol v2 支持");
+                return;
+            }
             addLocalBan(banEntry, source.getName());
             new Thread(() -> {
                 try {
